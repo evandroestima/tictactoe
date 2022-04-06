@@ -39,8 +39,6 @@ const Game = () => {
         setXIsNext(step % 2 === 0);
     }
 
-
-
     const legalMoves = () => {
         let moves = [];
         for (let i = 0; i < 9; i++) {

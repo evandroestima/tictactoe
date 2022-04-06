@@ -35,18 +35,29 @@ const Game = () => {
         setXIsNext(step % 2 === 0);
     }
 
-    const legalMoves = history[stepNumber].filter(s => !s);
+
+
+    const legalMoves = () => {
+        let moves = [];
+        for (let i = 0; i < 9; i++) {
+            if (history[stepNumber][i] === null) {
+                moves.push(i);
+            }
+        }
+        return moves;
+    }
 
     const artificialIntelligence = () => {
         const historyPoint = history.slice(0, stepNumber + 1);
         const current = historyPoint[stepNumber];
         const squares = [...current];
+        const moves = legalMoves();
 
-        if (legalMoves.length === 0) {
+        if (moves === 0) {
             return;
         }
 
-        const randomMove = legalMoves[Math.floor(Math.random() * legalMoves.length)];
+        const randomMove = moves[Math.floor(Math.random() * moves.length)];
 
         squares[randomMove] = xO;
         setHistory([...historyPoint, squares]);
@@ -62,12 +73,19 @@ const Game = () => {
         if (squares[i]) return;
 
         squares[i] = xO;
+
         setHistory([...historyPoint, squares]);
         setStepNumber(historyPoint.length);
         setXIsNext(!xIsNext);
-        artificialIntelligence();
-    };
 
+        const moves = legalMoves();
+
+        console.log(moves)
+
+        const randomMove = moves[Math.floor(Math.random() * moves.length)];
+
+        console.log(randomMove);
+    };
 
     const isArrayFull = (arr) => {
         return arr.every(item => item !== null);

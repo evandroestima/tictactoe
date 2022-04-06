@@ -2,12 +2,11 @@ import React from "react";
 import Square from "../square/index";
 import { BoardStyle } from './styles';
 
-const squares = Array(9).fill(null);
 
-const Board = () => (
+const Board = ({ squares, onClick }) => (
     <BoardStyle >
-        {squares.map((i) => (
-            <Square key={i} />
+        {squares.map((square, i) => (
+            <Square onClick={() => onClick(i)} value={square} key={i} />
         ))}
     </BoardStyle>
 );

@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 export const BoardStyle = styled.div`
-  border: 1rem solid #ff652f;
-  background: #ff652f;
+  border: 1rem solid #f8f566;
+  background: #f8f566;
   width: 500px;
   height: 500px;
   display: grid;

@@ -6,4 +6,5 @@ export const Button = styled.button`
   font-size: 5rem;
   cursor: pointer;
   outline: none;
+    color: ${props => (props.current == "X" ? '#b75dff' : '#f8f566')};
 `

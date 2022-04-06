@@ -11,7 +11,6 @@ const Game = () => {
 
     //function taken from react docs
     function calculateWinner(squares) {
-        console.log(history)
         const lines = [
             [0, 1, 2],
             [3, 4, 5],
@@ -36,6 +35,25 @@ const Game = () => {
         setXIsNext(step % 2 === 0);
     }
 
+    const legalMoves = history[stepNumber].filter(s => !s);
+
+    const artificialIntelligence = () => {
+        const historyPoint = history.slice(0, stepNumber + 1);
+        const current = historyPoint[stepNumber];
+        const squares = [...current];
+
+        if (legalMoves.length === 0) {
+            return;
+        }
+
+        const randomMove = legalMoves[Math.floor(Math.random() * legalMoves.length)];
+
+        squares[randomMove] = xO;
+        setHistory([...historyPoint, squares]);
+        setStepNumber(historyPoint.length);
+        setXIsNext(!xIsNext);
+    };
+
     const handleClick = (i) => {
         const historyPoint = history.slice(0, stepNumber + 1);
         const current = historyPoint[stepNumber];
@@ -47,16 +65,28 @@ const Game = () => {
         setHistory([...historyPoint, squares]);
         setStepNumber(historyPoint.length);
         setXIsNext(!xIsNext);
+        artificialIntelligence();
     };
+
+
+    const isArrayFull = (arr) => {
+        return arr.every(item => item !== null);
+    }
 
 
     const useDidMountEffect = (func) => {
         const didMount = useRef(false);
 
         useEffect(() => {
+            const isFull = isArrayFull(history[stepNumber]);
             if (didMount.current && winner) {
                 func();
-            } else {
+            }
+            else if (didMount.current && isFull) {
+                alert("Draw!");
+                goToStep(0);
+            }
+            else {
                 didMount.current = true;
             }
         }, [func]);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Board from "../board/index";
-import { Title, Container } from './styles';
+import { Title, Container, DisplayWinnerAmount } from './styles';
 
 const Game = () => {
     const [history, setHistory] = useState([Array(9).fill(null)]);
@@ -8,6 +8,10 @@ const Game = () => {
     const [xIsNext, setXIsNext] = useState(true);
     const winner = calculateWinner(history[stepNumber]);
     const xO = xIsNext ? "X" : "O";
+    const [flag, setFlag] = useState(false);
+    const [humanWinner, setHumanWinner] = useState(0);
+    const [computerWinner, setComputerWinner] = useState(0);
+    const [drawWins, setDrawWins] = useState(0);
 
     //function taken from react docs
     function calculateWinner(squares) {
@@ -63,6 +67,7 @@ const Game = () => {
         setHistory([...historyPoint, squares]);
         setStepNumber(historyPoint.length);
         setXIsNext(!xIsNext);
+        setFlag(!flag);
     };
 
     const handleClick = (i) => {
@@ -77,15 +82,14 @@ const Game = () => {
         setHistory([...historyPoint, squares]);
         setStepNumber(historyPoint.length);
         setXIsNext(!xIsNext);
-
-        const moves = legalMoves();
-
-        console.log(moves)
-
-        const randomMove = moves[Math.floor(Math.random() * moves.length)];
-
-        console.log(randomMove);
+        setFlag(!flag);
     };
+
+    useEffect(() => {
+        if (flag) {
+            artificialIntelligence();
+        }
+    }, [flag]);
 
     const isArrayFull = (arr) => {
         return arr.every(item => item !== null);
@@ -102,6 +106,7 @@ const Game = () => {
             }
             else if (didMount.current && isFull) {
                 alert("Draw!");
+                setDrawWins(drawWins + 1);
                 goToStep(0);
             }
             else {
@@ -114,6 +119,12 @@ const Game = () => {
 
     useDidMountEffect(() => {
         alert("Game over! Winner is " + winner);
+        if (winner === "X") {
+            setHumanWinner(humanWinner + 1);
+        }
+        else if (winner === "O") {
+            setComputerWinner(computerWinner + 1);
+        }
         goToStep(0)
     });
 
@@ -123,6 +134,15 @@ const Game = () => {
                 Welcome to Tic Tac Toe!
             </Title>
             <Board squares={history[stepNumber]} onClick={handleClick} />
+            <DisplayWinnerAmount current={humanWinner}>
+                Human victories: {humanWinner}
+            </DisplayWinnerAmount>
+            <DisplayWinnerAmount current={computerWinner}>
+                Computer victories: {computerWinner}
+            </DisplayWinnerAmount>
+            <DisplayWinnerAmount current={drawWins}>
+                Draws: {drawWins}
+            </DisplayWinnerAmount>
         </Container>
     );
 };

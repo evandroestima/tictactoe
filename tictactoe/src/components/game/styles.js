@@ -13,4 +13,10 @@ export const Container = styled.div`
     justify-content: center;
     width: 100%;
     height: 100%;
-    `;
+`;
+
+export const DisplayWinnerAmount = styled.div`
+    font-size: 2rem;
+    text-align: center;
+    color: ${props => (props.current == "X" ? '#b75dff' : '#f8f566')};
+ `;

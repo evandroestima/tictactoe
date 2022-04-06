@@ -12,6 +12,7 @@ const Game = () => {
     const [humanWinner, setHumanWinner] = useState(0);
     const [computerWinner, setComputerWinner] = useState(0);
     const [drawWins, setDrawWins] = useState(0);
+    const [winnerSquares, setWinnerSquares] = useState([]);
 
     //function taken from react docs
     function calculateWinner(squares) {
@@ -28,6 +29,7 @@ const Game = () => {
         for (let i = 0; i < lines.length; i++) {
             const [a, b, c] = lines[i];
             if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+                // setWinnerSquares([a, b, c]);
                 return squares[a];
             }
         }
@@ -131,7 +133,7 @@ const Game = () => {
             <Title>
                 Welcome to Tic Tac Toe!
             </Title>
-            <Board squares={history[stepNumber]} onClick={handleClick} />
+            <Board squares={history[stepNumber]} onClick={handleClick} winnerSquares={winnerSquares} />
             <DisplayWinnerAmount current={humanWinner}>
                 Human victories: {humanWinner}
             </DisplayWinnerAmount>
